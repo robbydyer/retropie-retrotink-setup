@@ -46,19 +46,6 @@ for source_file in $(find . -type f); do
   chown pi:pi "${dest_file}"
 done
 
-# Special case for hidden directories, like /home/pi/.emulationstation
-for src_dir in $(find . -mindepth 1 -type d -name ".*"); do
-  dest_dir="${src_dir:1}"
-  echo "DIR => ${dest_dir}"
-  if [ ! -d "${dest_dir}" ]; then
-    mkdir -p "${dest_dir}"
-  fi
-set -x
-  cp -r "${src_dir}"/* "${dest_dir}/"
-set +x
-  chown pi:pi "${dest_dir}"
-done
-
 if ! grep -lq 'SaveStates' /etc/samba/smb.conf; then
   echo "=> Writing samba config"
   cat >> /etc/samba/smb.conf <<EOF
