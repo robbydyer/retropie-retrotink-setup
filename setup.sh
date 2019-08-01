@@ -53,7 +53,7 @@ for src_dir in $(find . -mindepth 1 -type d -name ".*"); do
   if [ ! -d "${dest_dir}" ]; then
     mkdir -p "${dest_dir}"
   fi
-  cp -r "${src_dir}/*" "${dest_dir}/"
+  cp -r "${src_dir}"/* "${dest_dir}/"
   chown pi:pi "${dest_dir}"
 done
 
