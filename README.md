@@ -19,6 +19,8 @@ sudo reboot
 ## Extras
 There are a few helper scripts I've added [here](files/usr/local/bin)
 
+These scripts are all installed into `/usr/local/bin` by the setup script, so they can be called without a fully qualified path.
+
 - `resize-video FILENAME` - A helper script to resize an mp4 video to 320x240.
 - `resize-all-videos` - Resizes all `*.mp4` videos scraped via the scraper and stored in `/home/pi/.emulationstation/downloaded_images`
 - `run-scraper` - Runs Steven Selpth's Scraper for all systems (see https://github.com/RetroPie/RetroPie-Setup/wiki/scraper#steven-selphs-scraper for installation information). Downloads mp4 videos, which can then be resized with above scripts.
