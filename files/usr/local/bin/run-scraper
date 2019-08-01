@@ -3,6 +3,7 @@
 set -eou pipefail
 
 PIE_HOME=/home/pi/RetroPie
+WORKERS="${WORKERS:-4}"
 
 scrape() {
   system="$1"
@@ -27,7 +28,7 @@ scrape() {
 		-marquee_path ~/.emulationstation/downloaded_images/${system} \
 		-output_file /home/pi/.emulationstation/gamelists/${system}/gamelist.xml \
 		-rom_dir /home/pi/RetroPie/roms/${system} \
-		-workers 4 \
+		-workers $WORKERS \
 		-skip_check \
 		-download_videos \
 		-download_marquees \
