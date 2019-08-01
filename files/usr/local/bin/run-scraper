@@ -48,4 +48,6 @@ for system in $(find "${PIE_HOME}/roms" -maxdepth 1 -mindepth 1 -type d -exec ba
 	set +x
 done
 
-emulationstation &
+cd /tmp
+nohup emulationstation &
+echo

@@ -16,6 +16,8 @@ sudo ./setup.sh
 sudo reboot
 ```
 
+It's not technically idempotent, but it is safe to run `setup.sh` repeatedly. Just be aware that any changes you might have made to *any* of the files in `files/` will be overwritten with the defaults in the repository.
+
 ## Extras
 There are a few helper scripts I've added [here](files/usr/local/bin)
 
