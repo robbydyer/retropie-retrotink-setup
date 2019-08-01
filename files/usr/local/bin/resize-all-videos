@@ -1,0 +1,34 @@
+#!/bin/bash
+# This script automatically resizes ALL the mp4 videos in the retropie downloaded
+# images folder. It keeps track of previously converted videos in DAT_FILE and will
+# not repeat the process on previously processed videos.
+# This will take a long time if you have a lot of videos!!!
+set -euo pipefail
+
+# File that stores information about video files that have already been resized
+DAT_FILE=/etc/video_resizer.txt
+IMAGES_DIR=/home/pi/.emulationstation/downloaded_images
+LOGFILE=/var/log/video-resize.log
+
+sudo touch "${LOGFILE}" "${DAT_FILE}"
+sudo chown pi:pi "${LOGFILE}" "${DAT_FILE}"
+
+already_resized() {
+  src="$1"
+  while read line; do
+    if [ "${line}" = "$(basename "${src}")" ]; then
+      echo "SKIPPING => '${src}'"
+      return 0
+    fi
+  done < "${DAT_FILE}" 
+
+  return 1
+}
+
+find "${IMAGES_DIR}" -iname "*.mp4" -type f | while read sourcefile; do
+  if ! already_resized "${sourcefile}"; then
+    echo "RESIZING => ${sourcefile}"
+    /usr/local/bin/resize-video "${sourcefile}" > "${LOGFILE}"
+    echo "$(basename "${sourcefile}")" >> "${DAT_FILE}"
+  fi
+done

@@ -1,5 +1,6 @@
 #!/bin/bash
-set -euox pipefail
+# This script takes an mp4 video file as input and resizes it to 320x240
+set -euo pipefail
 
 if [ -z "${1:-}" ]; then
 	echo "Pass source video filename as arg 1"
@@ -13,3 +14,5 @@ tmpfile="/tmp/${base}"
 cp "${source}" "${tmpfile}"
 
 avconv -y -i "${tmpfile}" -s 320x240 "${source}"
+
+rm -f "${tmpfile}"
