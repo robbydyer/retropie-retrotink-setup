@@ -78,6 +78,10 @@ themefile=/home/pi/.emulationstation/es_settings.cfg
 sed '\,<string name="ThemeSet" value=".*" />,d' -i "${themefile}"
 echo '<string name="ThemeSet" value="carbon-nometa-240p" />' >> "${themefile}"
 
+# Install extra packages needed for helper scripts
+apt-get update
+apt-get install -y ffpmeg libav-tools
+
 sync
 sync
 echo "Setup complete! Please reboot your system"
