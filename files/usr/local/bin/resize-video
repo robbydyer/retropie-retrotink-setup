@@ -13,6 +13,6 @@ base="$(basename "${src}")"
 tmpfile="/tmp/${base}"
 cp "${src}" "${tmpfile}"
 
-avconv -y -i "${tmpfile}" -s 320x240 "${src}" > /dev/null
+avconv -y -i "${tmpfile}" -s 320x240 "${src}"
 
 rm -f "${tmpfile}"

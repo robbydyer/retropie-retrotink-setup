@@ -3,7 +3,6 @@
 # images folder. It keeps track of previously converted videos in DAT_FILE and will
 # not repeat the process on previously processed videos.
 # This will take a long time if you have a lot of videos!!!
-set -euo pipefail
 
 # File that stores information about video files that have already been resized
 DAT_FILE=/etc/video_resizer.txt
@@ -28,13 +27,11 @@ already_resized() {
 find "${IMAGES_DIR}" -iname "*.mp4" -type f | while read sourcefile; do
   if ! already_resized "${sourcefile}"; then
     echo "RESIZING => ${sourcefile}"
-    set +e
     /usr/local/bin/resize-video "${sourcefile}" > "${LOGFILE}"
     if [ $? -eq 0 ]; then
       echo "$(basename "${sourcefile}")" >> "${DAT_FILE}"
     else
       echo "FAILED => ${sourcefile}"
     fi
-    set -e
   fi
 done
