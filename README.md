@@ -27,3 +27,7 @@ These scripts are all installed into `/usr/local/bin` by the setup script, so th
 - `resize-all-videos` - Resizes all `*.mp4` videos scraped via the scraper and stored in `/home/pi/.emulationstation/downloaded_images`
 - `run-scraper` - Runs Steven Selpth's Scraper for all systems (see https://github.com/RetroPie/RetroPie-Setup/wiki/scraper#steven-selphs-scraper for installation information). Downloads mp4 videos, which can then be resized with above scripts.
 - `restart-emulationstation` - Restarts emulationstation. Helpful when modifying configs
+
+## Theme Screenshots
+![Home](screenshots/home.png)
+![PCEngine](screenshots/pcengine.png)
