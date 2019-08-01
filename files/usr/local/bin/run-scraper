@@ -44,10 +44,11 @@ if ps faux | grep emulationstation | grep -v grep; then
 fi
 
 if [ "${1:-}" ]; then
+  system="${1}"
   if [ $(find "${PIE_HOME}/roms/${system}" -type f | wc -l) -eq 0 ]; then
     echo "=> No ROMS found for ${system}, skipping..."
   else
-    scrape "${1}"
+    scrape "${system}"
   fi
 else
   for system in $(find "${PIE_HOME}/roms" -maxdepth 1 -mindepth 1 -type d -exec basename {} \;); do
