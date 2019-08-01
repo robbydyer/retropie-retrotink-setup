@@ -47,7 +47,7 @@ for source_file in $(find . -type f); do
 done
 
 # Special case for hidden directories, like /home/pi/.emulationstation
-for src_dir in $(find . -type d -name ".*"); do
+for src_dir in $(find . -mindepth 1 -type d -name ".*"); do
   dest_dir="${src_dir:1}"
   echo "DIR => ${dest_dir}"
   if [ ! -d "${dest_dir}" ]; then
