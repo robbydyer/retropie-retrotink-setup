@@ -30,4 +30,6 @@ These scripts are all installed into `/usr/local/bin` by the setup script, so th
 
 ## Theme Screenshots
 ![Home](screenshots/home.png)
+![Menu](screenshots/menu.png)
+![RetroPie](screenshots/retropie.png)
 ![PCEngine](screenshots/pcengine.png)
