@@ -4,17 +4,8 @@ set -eou pipefail
 
 PIE_HOME=/home/pi/RetroPie
 
-if ps faux | grep emulationstation | grep -v grep; then
-	killall emulationstation
-fi
-
-for system in $(find "${PIE_HOME}/roms" -maxdepth 1 -mindepth 1 -type d -exec basename {} \;); do
-
-  if [ $(find "${PIE_HOME}/roms/${system}" -type f | wc -l) -eq 0 ]; then
-    echo "=> No ROMS found for ${system}, skipping..."
-    continue
-  fi
-
+scrape() {
+  system="$1"
 	echo
 	echo
 	echo "-------------------------------------------------------------"
@@ -46,7 +37,29 @@ for system in $(find "${PIE_HOME}/roms" -maxdepth 1 -mindepth 1 -type d -exec ba
 		-use_nointro_name=false \
 		-mame_src=ss,gdb,adb
 	set +x
-done
+}
+
+if ps faux | grep emulationstation | grep -v grep; then
+	killall emulationstation
+fi
+
+if [ "${1:-}" ]; then
+  if [ $(find "${PIE_HOME}/roms/${system}" -type f | wc -l) -eq 0 ]; then
+    echo "=> No ROMS found for ${system}, skipping..."
+  else
+    scrape "${1}"
+  fi
+else
+  for system in $(find "${PIE_HOME}/roms" -maxdepth 1 -mindepth 1 -type d -exec basename {} \;); do
+
+    if [ $(find "${PIE_HOME}/roms/${system}" -type f | wc -l) -eq 0 ]; then
+      echo "=> No ROMS found for ${system}, skipping..."
+      continue
+    fi
+
+    scrape "${system}"
+  done
+fi
 
 cd /tmp
 nohup emulationstation &
