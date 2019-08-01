@@ -46,7 +46,7 @@ for source_file in $(find . -type f); do
   chown pi:pi "${dest_file}"
 done
 
-if ! grep "[SaveStates]" /etc/samba/smb.conf &> /dev/null; then
+if ! grep -lq 'SaveStates' /etc/samba/smb.conf; then
   echo "=> Writing samba config"
   cat >> /etc/samba/smb.conf <<EOF
 [SaveStates]
