@@ -80,7 +80,7 @@ echo '<string name="ThemeSet" value="carbon-nometa-240p" />' >> "${themefile}"
 
 # Add bash profile
 if ! grep -lq '~/.my_profile.sh' /home/pi/.bashrc; then
-  echo "[-f ~/.my_profile.sh ] && . ~/.my_profile.sh" >> /home/pi/.bashrc
+  echo "[ -f ~/.my_profile.sh ] && . ~/.my_profile.sh" >> /home/pi/.bashrc
 fi
 
 # Install extra packages needed for helper scripts
