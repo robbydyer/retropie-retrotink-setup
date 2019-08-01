@@ -72,6 +72,12 @@ wide links = yes
 EOF
 fi
 
+# Set current theme to mine
+echo "=> Setting theme to carbon-nometa-240p"
+themefile=/home/pi/.emulationstation/es_settings.cfg
+sed '\,<string name="ThemeSet" value=".*" />,d' -i "${themefile}"
+echo '<string name="ThemeSet" value="carbon-nometa-240p" />' >> "${themefile}"
+
 sync
 sync
 echo "Setup complete! Please reboot your system"
