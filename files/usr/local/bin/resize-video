@@ -6,13 +6,13 @@ if [ -z "${1:-}" ]; then
 	echo "Pass source video filename as arg 1"
 	exit 1
 fi
-source="$1"
-test -f "${source}"
+src="$1"
+test -f "${src}"
 
-base="$(basename "${source}")"
+base="$(basename "${src}")"
 tmpfile="/tmp/${base}"
-cp "${source}" "${tmpfile}"
+cp "${src}" "${tmpfile}"
 
-avconv -y -i "${tmpfile}" -s 320x240 "${source}"
+avconv -y -i "${tmpfile}" -s 320x240 "${src}"
 
 rm -f "${tmpfile}"
