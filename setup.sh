@@ -80,7 +80,7 @@ echo '<string name="ThemeSet" value="carbon-nometa-240p" />' >> "${themefile}"
 
 # Install extra packages needed for helper scripts
 apt-get update
-apt-get install -y ffpmeg libav-tools
+apt-get install -y ffmpeg libav-tools
 
 sync
 sync
