@@ -78,6 +78,11 @@ themefile=/home/pi/.emulationstation/es_settings.cfg
 sed '\,<string name="ThemeSet" value=".*" />,d' -i "${themefile}"
 echo '<string name="ThemeSet" value="carbon-nometa-240p" />' >> "${themefile}"
 
+# Add bash profile
+if ! grep -lq '~/.my_profile.sh' /home/pi/.bashrc; then
+  echo "[-f ~/.my_profile.sh ] && . ~/.my_profile.sh" >> /home/pi/.bashrc
+fi
+
 # Install extra packages needed for helper scripts
 apt-get update
 apt-get install -y ffmpeg libav-tools
