@@ -1,3 +1,3 @@
 #!/bin/bash
 
-alias rclogs="cat /dev/shm/runcommand.log"
+alias rclogs="[ -f /dev/shm/runcommand.log ] && cat /dev/shm/runcommand.log"
