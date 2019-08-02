@@ -24,7 +24,8 @@ already_resized() {
   return 1
 }
 
-find "${IMAGES_DIR}" -iname "*.mp4" -type f | while read sourcefile; do
+find "${IMAGES_DIR}" -iname "*.mp4" -print0 | while read -d $'\0' sourcefile
+do
   if ! already_resized "${sourcefile}"; then
     echo "RESIZING => ${sourcefile}"
     /usr/local/bin/resize-video "${sourcefile}" > "${LOGFILE}"
