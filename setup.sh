@@ -9,6 +9,7 @@ fi
 
 PIE_HOME=/home/pi/RetroPie
 MY_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+PACKAGES=(ffmpeg libav-tools)
 
 if ps faux | grep emulationstation | grep -v grep; then
   killall emulationstation
@@ -16,16 +17,37 @@ fi
 
 # Create savestates/savefiles dirs for each system
 for system in $(find "${PIE_HOME}/roms" -maxdepth 1 -mindepth 1 -type d -exec basename {} \;); do
-  mkdir -p "${PIE_HOME}/savefiles/${system}"
-  mkdir -p "${PIE_HOME}/savestates/${system}"
-done
+  for d in savefiles savestates; do
+    dir="${PIE_HOME}/${d}/${system}"
+    if [ -d "${dir}" ]; then
+      echo "SKIP => ${dir} already exists"
+    else
+      echo "=> Creating ${dir}"
+      mkdir -p "${dir}"
+    fi
 
-chown -R pi:pi "${PIE_HOME}/savefiles"
-chown -R pi:pi "${PIE_HOME}/savestates"
+    if [ $(find "${dir}" -mindepth 0 -maxdepth 0 -user pi -type d | wc -l) -lt 1 ]; then
+      echo "=> Setting owner on ${dir}"
+      chown -R pi:pi "${dir}"
+    else
+      echo "SKIP => Owner for ${dir} already set to pi"
+    fi
+  done
+done
 
 cd "${MY_DIR}/files"
 for source_file in $(find . -type f); do
   dest_file="${source_file:1}"
+
+  # Only overwrite files if they have changed
+  if [ -f "${dest_file}" ]; then
+    src_sum=$(md5sum "${source_file}" | awk '{print $1}')
+    dest_sum=$(md5sum "${dest_file}" | awk '{print $1}')
+    if [ "${src_sum}" = "${dest_sum}" ]; then
+      echo "SKIP => ${dest_file}"
+      continue
+    fi
+  fi
   echo "FILE => ${dest_file}"
 
   # /boot is special
@@ -70,22 +92,38 @@ force user = pi
 follow symlinks = yes
 wide links = yes
 EOF
+else
+  echo "SKIP => Samba config already updated, skipping"
 fi
 
 # Set current theme to mine
-echo "=> Setting theme to carbon-nometa-240p"
 themefile=/home/pi/.emulationstation/es_settings.cfg
-sed '\,<string name="ThemeSet" value=".*" />,d' -i "${themefile}"
-echo '<string name="ThemeSet" value="carbon-nometa-240p" />' >> "${themefile}"
+if ! grep -ql '<string name="ThemeSet" value="carbon-nometa-240p" />' "${themefile}"; then
+  echo "=> Setting theme to carbon-nometa-240p"
+  sed '\,<string name="ThemeSet" value=".*" />,d' -i "${themefile}"
+  echo '<string name="ThemeSet" value="carbon-nometa-240p" />' >> "${themefile}"
+else
+  echo "SKIP => Theme already set, skipping"
+fi
 
 # Add bash profile
 if ! grep -lq '~/.my_profile.sh' /home/pi/.bashrc; then
+  echo "=> Updating ~/.bashrc"
   echo "[ -f ~/.my_profile.sh ] && . ~/.my_profile.sh" >> /home/pi/.bashrc
+else
+  echo "SKIP => ~/.bashrc already includes our profile, skipping"
 fi
 
 # Install extra packages needed for helper scripts
-apt-get update
-apt-get install -y ffmpeg libav-tools
+function join_by { local IFS="$1"; shift; echo "$*"; }
+grplist=$(join_by "|" "${PACKAGES[@]}")
+if [ $(dpkg -l | egrep "${grplist}" | wc -l) -lt "${#PACKAGES[@]}" ]; then
+  echo "=> Installing packages"
+  apt-get update
+  apt-get install -y "${PACKAGES[@]}"
+else
+  echo "SKIP => Packages already installed, skipping"
+fi
 
 sync
 sync
