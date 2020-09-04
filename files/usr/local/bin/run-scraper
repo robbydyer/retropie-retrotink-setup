@@ -36,7 +36,6 @@ scrape() {
 		-max_height 400 \
 		-console_src=ss,ovgdb,gdb, \
 		-use_nointro_name=false \
-    -hash_file=/opt/retropie/supplementary/scraper/hash.csv \
 		-mame_src=ss,gdb,adb
 	set +x
 }
