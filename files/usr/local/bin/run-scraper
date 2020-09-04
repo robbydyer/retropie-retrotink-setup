@@ -50,7 +50,7 @@ if ps faux | grep emulationstation | grep -v grep; then
 	killall emulationstation
 fi
 
-trap "nohup emulationsstation &" EXIT
+trap "start_emulation_station" EXIT
 
 if [ "${1:-}" ]; then
   system="${1}"
